@@ -8,7 +8,7 @@ except Exception:
 
 from django.conf import settings
 import uuid
-
+ 
 
 # Instructor model
 class Instructor(models.Model):
