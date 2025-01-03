@@ -104,25 +104,15 @@ def enroll(request, course_id):
 
 # <HINT> Create a submit view to create an exam submission
 # record for a course enrollment,
-# you may implement it based on following logic:
 def submit(request, course_id):
-    # Get user and course object, then get the associated enrollment object created when the user enrolled the course
     course = get_object_or_404(Course, pk=course_id)
-    user=request.user
+    user = request.user
     enrollment = Enrollment.objects.get(user=user, course=course)
-
-    # Create a submission object referring to the enrollment
-    Submission.objects.create(enrollment=enrollment)
-    
-    # Collect the selected choices from exam form
-    choises = extract_answers(request)
-
-    # Add each selected choice object to the submission object
+    submission = Submission.objects.create(enrollment=enrollment)
+    choices = extract_answers(request)
     submission.choices.set(choices)
-
-    # Redirect to show_exam_result with the submission id
     submission_id = submission.id
-    return HttpResponseRedirect(reverse(viewname='onlinecourse:exam_result', args=(course_id, submission_id)))
+    return HttpResponseRedirect(reverse(viewname='onlinecourse:exam_result', args=(course_id, submission_id,)))
 
 # An example method to collect the selected choices from 
 # the exam form from the request object
